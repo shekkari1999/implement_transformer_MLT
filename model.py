@@ -35,11 +35,14 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('pe',pe)
 
     def forward(self, x):
-        x = x + (self.pe[:, :x.shape[1], :]).requires_grad = False
+        pe = self.pe[:, :x.shape[1], :]
+        pe.requires_grad = False
+        x = x + pe
         return self.dropout(x)
 
 class LayerNormalization(nn.Module):
-    def __inti__(self, eps = 10**-6):
+    def __init__(self, eps = 10**-6):
+        super().__init__()
         self.eps = eps
         self.alpha = nn.Parameter(torch.ones(1))
         self.bias = nn.Parameter(torch.zeros(1))
@@ -123,7 +126,7 @@ class ResidualConnection(nn.Module):
 
 class EncoderBlock(nn.Module):
     def __init__(self, self_attention_block : MultiHeadAttention, ffb : FFBlock, dropout):
-        super.__init__()
+        super().__init__()
         self.self_attention_block = self_attention_block
         self.feed_forward_block = ffb
 
@@ -160,7 +163,7 @@ class DecoderBlock(nn.Module):
         self.cross_attention_block = cross_attention_block
         self.feed_forward_block = feed_forward_block
         ## why are we not passing this one in parameters ??
-        self.residual_connections = nn.Module([ResidualConnection(dropout) for _ in range(3)])
+        self.residual_connections = nn.ModuleList([ResidualConnection(dropout) for _ in range(3)])
 
     ## what is the role of src_mask and tgt_mask ?
     def forward(self, x, encoder_output, src_mask, tgt_mask):

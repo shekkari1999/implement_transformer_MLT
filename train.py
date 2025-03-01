@@ -9,6 +9,7 @@ from tokenizers.pre_tokenizers import Whitespace
 from dataset import BilingualDataset, causal_mask
 from model import build_transformer
 from pathlib import Path
+import config
 from config import get_config, get_weights_file_path
 from torch.utils.tensorboard import SummaryWriter
 import warnings
@@ -113,7 +114,7 @@ def get_or_build_tokenizer(config, ds, lang):
 ## what does this do ? 
 def get_ds(config):
     ## explore these parameters
-    ds_raw = load_dataset('opus_books', f'{config['lang_src']} - {config['lang_tft']} ', split = 'train')
+    ds_raw = load_dataset('opus_books', f'{config["lang_src"]}-{config["lang_tgt"]}', split = 'train')
 
     # build tokenizers
     tokenizer_src = get_or_build_tokenizer(config, ds_raw, config['lang_src'])
