@@ -61,7 +61,7 @@ class BilingualDataset(Dataset):
             [
                 self.sos_token,
                 torch.tensor(dec_input_tokens, dtype = torch.int64),
-                torch.tensor([self.pad_token] * enc_num_padding_tokens, dtype=torch.int64)
+                torch.tensor([self.pad_token] * dec_num_padding_tokens, dtype=torch.int64)
             ]
         )
         
@@ -70,7 +70,7 @@ class BilingualDataset(Dataset):
             [
                 torch.tensor(dec_input_tokens, dtype = torch.int64),
                 self.eos_token,
-                torch.tensor([self.pad_token] * enc_num_padding_tokens, dtype=torch.int64)
+                torch.tensor([self.pad_token] * dec_num_padding_tokens, dtype=torch.int64)
             ]
             
         )

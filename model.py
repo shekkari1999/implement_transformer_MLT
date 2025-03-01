@@ -81,7 +81,7 @@ class MultiHeadAttention(nn.Module):
     
     @staticmethod
     def attention(query, key, value, mask, dropout : nn.Dropout):
-        d_k = query.shap[-1]
+        d_k = query.shape[-1]
         attention_scores = (query @ key.transpose(-2,-1))/math.sqrt(d_k)  # why not self. ??
         if mask is not None:
             attention_scores.masked_fill_(mask == 0, -1e9)
